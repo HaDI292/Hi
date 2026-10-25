@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="color-scheme" content="dark">
+<title>LOUDLINK</title>
+<!--OG-->
+<style>
+:root{--line:#262626;--line2:#444;--mute:#8c8c8c;color-scheme:dark}
+*{box-sizing:border-box}
+html,body{margin:0;background:#000;color:#fff}
+body{font:16px/1.5 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;-webkit-text-size-adjust:100%;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);min-height:100vh}
+main{max-width:720px;margin:0 auto;padding:20px 20px 64px}
+header{display:flex;justify-content:space-between;align-items:center;padding:8px 0 40px}
+.logo{font-weight:800;font-size:19px;letter-spacing:.18em;color:#fff;text-decoration:none}
+a{color:#fff}
+h1{font-size:clamp(28px,6vw,40px);line-height:1.1;margin:0 0 10px;font-weight:700;letter-spacing:-.02em;word-break:break-word}
+.mute{color:var(--mute)}
+.btn{font:inherit;font-size:15px;font-weight:600;min-height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--line2);background:#000;color:#fff;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;text-decoration:none;transition:background .15s,color .15s,border-color .15s}
+.btn:hover{border-color:#fff}
+.btn.solid{background:#fff;color:#000;border-color:#fff}
+.btn.solid:hover{background:#d9d9d9}
+.btn.sm{min-height:38px;padding:0 15px;font-size:14px}
+:focus-visible{outline:2px solid #fff;outline-offset:3px}
+.zone{border:1px dashed var(--line2);border-radius:28px;padding:56px 24px;text-align:center;transition:border-color .15s,background .15s}
+.zone.over{border:1px solid #fff;background:#111}
+.ring{width:76px;height:76px;border-radius:50%;border:1px solid var(--line2);margin:0 auto 24px;display:grid;place-items:center}
+.ring svg{width:30px;height:30px;fill:none;stroke:#fff;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.zone p{margin:0 0 24px}
+h2{font-size:17px;margin:44px 0 14px;font-weight:600}
+.row{border:1px solid var(--line);border-radius:16px;padding:16px;margin-bottom:12px}
+.top{display:flex;gap:12px;justify-content:space-between;align-items:baseline}
+.name{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.meta{display:flex;gap:14px;font-size:13px;color:var(--mute);flex-shrink:0}
+.bar{height:2px;background:var(--line);margin-top:14px;border-radius:2px;overflow:hidden}
+.bar i{display:block;height:100%;width:0;background:#fff;transition:width .1s}
+.err{color:#fff;border:1px solid #fff;border-radius:16px;padding:14px 16px;margin:0 0 16px;font-size:15px}
+.link{display:flex;gap:8px;margin-top:14px}
+.link input{flex:1;min-width:0;font:inherit;font-size:14px;color:#fff;background:#000;border:1px solid var(--line);border-radius:12px;padding:0 12px;min-height:44px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.srv{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.srv input{flex:1;min-width:200px;font:inherit;color:#fff;background:#000;border:1px solid var(--line2);border-radius:12px;padding:0 12px;min-height:44px}
+.view{text-align:center;padding-top:8px}
+.view .meta{justify-content:center;margin:0 0 32px}
+.stage{margin:0 auto 28px}
+.stage img,.stage video{display:block;max-width:100%;max-height:70vh;margin:0 auto;border-radius:16px;background:#000;border:1px solid var(--line)}
+.stage video{width:100%}
+.play{width:104px;height:104px;border-radius:50%;border:1px solid #fff;background:#000;cursor:pointer;display:grid;place-items:center;margin:0 auto 26px;transition:background .15s}
+.play svg{width:42px;height:42px;fill:#fff}
+.play:hover{background:#fff}.play:hover svg{fill:#000}
+.play.pulse{animation:pulse 1.6s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(255,255,255,.5)}100%{box-shadow:0 0 0 26px rgba(255,255,255,0)}}
+.seek{display:flex;align-items:center;gap:12px;font-size:13px;color:var(--mute);font-variant-numeric:tabular-nums}
+.seek input{flex:1;-webkit-appearance:none;appearance:none;background:transparent;height:32px;margin:0}
+.seek input::-webkit-slider-runnable-track{height:2px;background:var(--line2)}
+.seek input::-moz-range-track{height:2px;background:var(--line2)}
+.seek input::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:#fff;margin-top:-6px}
+.seek input::-moz-range-thumb{width:14px;height:14px;border:0;border-radius:50%;background:#fff}
+.hint{min-height:22px;font-size:14px;color:var(--mute);margin:12px 0 0}
+.view .acts{justify-content:center;margin-top:28px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:#fff;color:#000;font-weight:600;font-size:14px;padding:11px 20px;border-radius:999px;z-index:9}
+footer{margin-top:56px;text-align:center;font-size:14px}
+@media(max-width:480px){.zone{padding:44px 18px}.top{flex-direction:column;gap:4px}.link{flex-direction:column}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+<header><a class="logo" href="#" id="home">LOUDLINK</a></header>
+<div id="app"></div>
+</main>
+<script>
+(function(){
+'use strict';
+var $=function(s){return document.querySelector(s)};
+function h(t,a){var e=document.createElement(t);a=a||{};for(var k in a){var v=a[k];if(v==null||v===false)continue;if(k==='class')e.className=v;else if(k.slice(0,2)==='on')e.addEventListener(k.slice(2),v);else e.setAttribute(k,v===true?'':v)}
+ for(var i=2;i<arguments.length;i++)[].concat(arguments[i]).forEach(function(x){if(x!=null&&x!==false)e.append(x.nodeType?x:document.createTextNode(x))});return e}
+var store={get:function(k){try{return localStorage.getItem(k)}catch(e){return null}},set:function(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+var API=store.get('loudlink.api');if(API==null)API=location.protocol.indexOf('http')===0?'':'http://localhost:3000';
+var app=$('#app'),KINDS={mp3:'audio',wav:'audio',m4a:'audio',aac:'audio',ogg:'audio',flac:'audio',mp4:'video',mov:'video',m4v:'video',webm:'video',jpg:'image',jpeg:'image',png:'image',webp:'image',gif:'image'};
+var ACCEPT='audio/*,video/*,image/*,.mp3,.wav,.m4a,.aac,.ogg,.flac,.mp4,.mov,.m4v,.webm,.jpg,.jpeg,.png,.webp,.gif';
+var cfg={maxBytes:500*1048576};
+function kindOf(f){var e=(f.name.split('.').pop()||'').toLowerCase();return KINDS[e]||'other'}
+function fmt(n){return n<1024?n+' B':n<1048576?(n/1024).toFixed(0)+' KB':n<1073741824?(n/1048576).toFixed(1)+' MB':(n/1073741824).toFixed(2)+' GB'}
+function mine(){try{return JSON.parse(store.get('loudlink.mine')||'[]')}catch(e){return[]}}
+function saveMine(a){store.set('loudlink.mine',JSON.stringify(a))}
+function shareUrl(id){return (API||location.origin)+'/s/'+id}
+function rawUrl(id,dl){return API+'/api/files/'+id+'/raw'+(dl?'?download=1':'')}
+function toast(t){var e=h('div',{class:'toast',role:'status'},t);document.body.append(e);setTimeout(function(){e.remove()},1800)}
+function copy(t){var p=navigator.clipboard&&navigator.clipboard.writeText?navigator.clipboard.writeText(t):Promise.reject();return p.catch(function(){var a=h('textarea',{readonly:true},t);a.style.cssText='position:fixed;opacity:0';document.body.append(a);a.select();try{document.execCommand('copy')}catch(e){}a.remove()}).then(function(){toast('Link copied')})}
+function share(name,url){if(navigator.share)navigator.share({title:name,url:url}).catch(function(){});else copy(url)}
+function del(item,done){if(!confirm('Delete "'+item.name+'"? The link will stop working.'))return;
+ fetch(API+'/api/files/'+item.id,{method:'DELETE',headers:{'X-Delete-Token':item.token||''}}).then(function(r){if(r.ok||r.status===404||r.status===410){saveMine(mine().filter(function(m){return m.id!==item.id}));toast('Deleted');done()}else throw 0}).catch(function(){toast('Could not delete. Try again.')})}
+var ICON={play:'<path d="M8 5v14l11-7z"/>',pause:'<path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z"/>'};
+function svg(p){var s=h('span');s.innerHTML='<svg viewBox="0 0 24 24" aria-hidden="true">'+p+'</svg>';return s.firstChild}
+
+/* ---------- Home ---------- */
+function home(){
+ document.title='LOUDLINK';app.textContent='';
+ var banner=h('div'),input=h('input',{type:'file',multiple:true,accept:ACCEPT,hidden:true}),list=h('div'),mineWrap=h('div');
+ var zone=h('div',{class:'zone',id:'zone'},
+  h('div',{class:'ring'},(function(){var s=h('span');s.innerHTML='<svg viewBox="0 0 24 24"><path d="M12 16V4M7 9l5-5 5 5M5 20h14"/></svg>';return s.firstChild})()),
+  h('h1',{},'Drop files, get a link'),
+  h('p',{class:'mute'},'Audio, video and images. Up to '+fmt(cfg.maxBytes)+' each.'),
+  h('button',{class:'btn solid',onclick:function(){input.click()}},'Choose files'));
+ app.append(banner,zone,input,list,mineWrap);
+ input.addEventListener('change',function(){add(input.files);input.value=''});
+ function add(files){[].slice.call(files).forEach(function(f){queue.push(f)});pump()}
+ var queue=[],busy=false;
+ function pump(){if(busy||!queue.length)return;busy=true;var f=queue.shift();upload(f,function(){busy=false;pump()})}
+ function upload(f,next){
+  var fill=h('i'),pct=h('span',{},'0%'),row=h('div',{class:'row'},h('div',{class:'top'},h('div',{class:'name'},f.name),h('div',{class:'meta'},h('span',{},fmt(f.size)),pct)),h('div',{class:'bar'},fill));
+  list.prepend(row);
+  function fail(m){row.textContent='';row.append(h('div',{class:'name'},f.name),h('p',{class:'mute',style:'margin:6px 0 0'},m));next()}
+  if(f.size>cfg.maxBytes)return fail('Too large. The limit is '+fmt(cfg.maxBytes)+'.');
+  var x=new XMLHttpRequest();x.open('POST',API+'/api/upload');x.setRequestHeader('X-File-Name',encodeURIComponent(f.name));
+  x.upload.onprogress=function(e){if(e.lengthComputable){var p=Math.round(e.loaded/e.total*100);fill.style.width=p+'%';pct.textContent=p+'%'}};
+  x.onerror=function(){fail('Could not reach the server.')};
+  x.onload=function(){var j={};try{j=JSON.parse(x.responseText)}catch(e){}
+   if(x.status!==201)return fail(j.error||'Upload failed ('+x.status+').');
+   var it={id:j.id,name:j.name,size:j.size,kind:j.kind,token:j.deleteToken};var m=mine();m.unshift(it);saveMine(m);
+   row.replaceWith(item(it,true));next()};
+  x.send(f)}
+ function item(it,isNew){var url=shareUrl(it.id),r=h('div',{class:'row'},h('div',{class:'top'},h('div',{class:'name'},it.name),h('div',{class:'meta'},h('span',{},it.kind==='other'?'file':it.kind),h('span',{},fmt(it.size)))));
+  var inp=h('input',{type:'text',readonly:true,value:url,'aria-label':'Share link',onfocus:function(){inp.select()}});
+  r.append(h('div',{class:'link'},inp,h('button',{class:'btn solid sm',onclick:function(){copy(url)}},'Copy link')),
+   h('div',{class:'acts'},navigator.share?h('button',{class:'btn sm',onclick:function(){share(it.name,url)}},'Share'):null,h('a',{class:'btn sm',href:url,target:'_blank',rel:'noopener'},'Open'),h('button',{class:'btn sm',onclick:function(){del(it,function(){r.remove()})}},'Delete')));
+  return r}
+ function showMine(){var a=mine();if(!a.length)return;mineWrap.append(h('h2',{},'On this device'));a.forEach(function(it){mineWrap.append(item(it))});
+  a.forEach(function(it){fetch(API+'/api/files/'+it.id).then(function(r){if(r.status===404||r.status===410){saveMine(mine().filter(function(m){return m.id!==it.id}));mineWrap.textContent='';showMine()}}).catch(function(){})})}
+ ['dragenter','dragover'].forEach(function(ev){window.addEventListener(ev,function(e){e.preventDefault();zone.classList.add('over')})});
+ ['dragleave','drop'].forEach(function(ev){window.addEventListener(ev,function(e){e.preventDefault();if(ev==='drop'||!e.relatedTarget)zone.classList.remove('over');if(ev==='drop'&&e.dataTransfer&&e.dataTransfer.files.length)add(e.dataTransfer.files)})});
+ function connect(){fetch(API+'/api/config').then(function(r){if(!r.ok)throw 0;return r.json()}).then(function(c){cfg=c;banner.textContent='';showMine();zone.querySelector('p').textContent='Audio, video and images. Up to '+fmt(c.maxBytes)+' each.'}).catch(function(){
+   banner.textContent='';var inp=h('input',{type:'url',value:API||'',placeholder:'https://your-server.example.com','aria-label':'Server address'});
+   banner.append(h('div',{class:'err'},h('div',{},'No LOUDLINK server found'+(API?' at '+API:'')+'. Uploads and share links need the backend (server.js). Start it, or enter its address:'),
+    h('div',{class:'srv'},inp,h('button',{class:'btn solid sm',onclick:function(){API=inp.value.trim().replace(/\/+$/,'');store.set('loudlink.api',API);connect()}},'Connect'))))})}
+ connect()}
+
+/* ---------- Viewer ---------- */
+function failMsg(code){return code===410?'This link has expired.':code===404?'This file does not exist or was deleted.':'Could not reach the server.'}
+function viewer(id){
+ document.title='LOUDLINK';app.textContent='';
+ var box=h('div',{class:'view'});app.append(box,h('footer',{},h('a',{href:API?API+'/':'/'},'Upload your own file')));
+ fetch(API+'/api/files/'+id).then(function(r){if(!r.ok)throw r.status;return r.json()}).then(function(m){
+  document.title=m.name+' - LOUDLINK';var src=rawUrl(id),url=shareUrl(id),stage=h('div',{class:'stage'}),hint=h('p',{class:'hint',role:'status'});
+  box.append(h('h1',{},m.name),h('div',{class:'meta'},h('span',{},m.kind==='other'?'file':m.kind),h('span',{},fmt(m.size))),stage);
+  function dl(msg){hint.textContent=msg||''}
+  if(m.kind==='audio'){
+   var a=h('audio',{preload:'metadata',playsinline:true,src:src}),btn=h('button',{class:'play','aria-label':'Play'},svg(ICON.play)),bar=h('input',{type:'range',min:0,max:1000,value:0,step:1,'aria-label':'Seek'}),cur=h('span',{},'0:00'),dur=h('span',{},'0:00');
+   var t=function(s){s=Math.floor(s||0);return Math.floor(s/60)+':'+('0'+s%60).slice(-2)},dragging=false;
+   function icon(p){btn.textContent='';btn.append(svg(p?ICON.play:ICON.pause));btn.setAttribute('aria-label',p?'Play':'Pause')}
+   btn.onclick=function(){btn.classList.remove('pulse');if(a.paused){var p=a.play();if(p&&p.catch)p.catch(function(e){if(e.name!=='AbortError')dl('Could not start playback. '+e.message)})}else a.pause()};
+   a.addEventListener('play',function(){icon(false);dl('')});a.addEventListener('pause',function(){icon(true)});a.addEventListener('ended',function(){icon(true)});
+   a.addEventListener('timeupdate',function(){cur.textContent=t(a.currentTime);if(!dragging&&isFinite(a.duration))bar.value=a.currentTime/a.duration*1000});
+   a.addEventListener('loadedmetadata',function(){if(isFinite(a.duration))dur.textContent=t(a.duration)});
+   a.addEventListener('waiting',function(){dl('Loading...')});a.addEventListener('playing',function(){dl('')});
+   a.addEventListener('error',function(){dl(a.error&&a.error.code===4?'This browser cannot play this audio format. Download it to listen.':'The audio could not be loaded. Check your connection and try again.')});
+   bar.addEventListener('input',function(){dragging=true;if(isFinite(a.duration))a.currentTime=bar.value/1000*a.duration});
+   bar.addEventListener('change',function(){dragging=false});
+   stage.append(btn,h('div',{class:'seek'},cur,bar,dur),a,hint);
+   var p=a.play();if(p&&p.catch)p.catch(function(){btn.classList.add('pulse');dl('Tap play to start.')});
+  }else if(m.kind==='video'){
+   var v=h('video',{controls:true,playsinline:true,preload:'metadata',src:src});v.addEventListener('error',function(){dl('This browser cannot play this video format. Download it to watch.')});stage.append(v,hint);
+  }else if(m.kind==='image'){
+   var im=h('img',{src:src,alt:m.name});im.addEventListener('error',function(){dl('The image could not be loaded.')});stage.append(im,hint);
+  }else stage.append(h('p',{class:'mute'},'This file type cannot be previewed. Download it to open it.'));
+  var acts=h('div',{class:'acts'},h('button',{class:'btn solid',onclick:function(){copy(url)}},'Copy link'),navigator.share?h('button',{class:'btn',onclick:function(){share(m.name,url)}},'Share'):null,h('a',{class:'btn',href:rawUrl(id,1),download:m.name},'Download'));
+  var own=mine().filter(function(x){return x.id===id})[0];if(own)acts.append(h('button',{class:'btn',onclick:function(){del(own,function(){location.href=API?API+'/':'/'})}},'Delete'));
+  box.append(acts);
+ }).catch(function(c){box.append(h('h1',{},'Link unavailable'),h('p',{class:'mute'},failMsg(c)))})}
+
+function route(){var m=/^\/s\/([A-Za-z0-9_-]{8,32})\/?$/.exec(location.pathname)||/[?&]id=([A-Za-z0-9_-]{8,32})/.exec(location.search)||/^#\/?s\/([A-Za-z0-9_-]{8,32})/.exec(location.hash);m?viewer(m[1]):home()}
+$('#home').addEventListener('click',function(e){if(/^\/s\//.test(location.pathname))return;e.preventDefault();history.replaceState(null,'',location.pathname+location.search);route()});
+window.addEventListener('hashchange',route);route();
+})();
+</script>
+</body>
+</html>
